@@ -4,6 +4,7 @@
 #include "ChipConfig.h"
 #include "IO.h"
 #include "timer.h"
+#include "PWM.h"
 
 int main(void)
 {
@@ -19,6 +20,7 @@ int main(void)
     LED_BLEUE = 1;
     LED_ORANGE = 1;
     
+    InitTimer1();
     InitTimer23();
 
 

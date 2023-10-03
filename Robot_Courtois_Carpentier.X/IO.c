@@ -29,7 +29,9 @@ void InitIO()
     // Configuration des entrées
     
 
-    // Configuration des pins remappables    
+    // Configuration des pins remappables  
+    _TRISB14 = 0;
+    _TRISB15 = 0;
     //*************************************************************
     // Unlock Registers
     //*************************************************************
