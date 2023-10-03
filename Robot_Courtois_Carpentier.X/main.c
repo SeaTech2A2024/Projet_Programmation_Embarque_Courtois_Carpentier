@@ -24,7 +24,8 @@ int main(void)
     InitTimer23();
     
     InitPWM();
-    PWMSetSpeed(20, 0);
+    PWMSetSpeed(-20, MOTEUR_DROIT);
+    PWMSetSpeed(-20, MOTEUR_GAUCHE);
 
 
     /****************************************************************************************************/

@@ -2,7 +2,7 @@
 #define PWM_H
 
 #define MOTEUR_DROIT 0
-#define MOTEUR_GAUGHE 1
+#define MOTEUR_GAUCHE 1
 
 
 
