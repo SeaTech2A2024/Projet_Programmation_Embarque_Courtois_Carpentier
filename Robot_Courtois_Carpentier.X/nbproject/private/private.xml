@@ -3,17 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/Robot.c</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/PWM.c</file>
-            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/ToolBox.h</file>
-            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/timer.h</file>
-            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/IO.h</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/ChipConfig.c</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/timer.c</file>
+            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/nbproject/Makefile-default.mk</file>
+            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/PWM.h</file>
+            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/nbproject/Makefile-impl.mk</file>
+            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/Robot.c</file>
+            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/ToolBox.h</file>
+            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/IO.h</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/ToolBox.c</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/main.c</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/Robot.h</file>
-            <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/PWM.h</file>
             <file>file:/C:/GitHub/Seatech_Courtois_Carpentier/Robot_Courtois_Carpentier.X/IO.c</file>
         </group>
     </open-files>
