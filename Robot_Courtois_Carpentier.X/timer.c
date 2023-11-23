@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "ChipConfig.h"
 #include "PWM.h"
+unsigned char toggle = 0;
 
 void InitTimer23(void)
     {
@@ -23,7 +24,7 @@ void InitTimer23(void)
     T2CONbits.TON = 1; // Start 32-bit Timer
     /* Example code for Timer3 ISR */
     }
-unsigned char toggle = 0;
+
 //Interruption du timer 32 bits sur 2-3
 
 void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
