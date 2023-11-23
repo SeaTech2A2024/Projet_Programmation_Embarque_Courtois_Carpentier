@@ -23,9 +23,11 @@ int main(void)
     InitTimer1();
     InitTimer23();
     
-    InitPWM();
-    PWMSetSpeed(-20, MOTEUR_DROIT);
-    PWMSetSpeed(-20, MOTEUR_GAUCHE);
+    _T3Interrupt();
+    
+    //InitPWM();
+    //PWMSetSpeed(20, MOTEUR_DROIT);
+    //PWMSetSpeed(20, MOTEUR_GAUCHE);
 
 
     /****************************************************************************************************/
