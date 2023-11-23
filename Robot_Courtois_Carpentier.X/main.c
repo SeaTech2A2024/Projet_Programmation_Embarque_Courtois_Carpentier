@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "PWM.h"
 #include "Robot.h"
+#include "ADC.h"
 
 int main(void) {
     /***************************************************************************************************/
@@ -23,11 +24,20 @@ int main(void) {
     InitTimer23();
     InitTimer1();
     InitPWM();
+    InitADC1();
 
     /****************************************************************************************************/
     // Boucle Principale
     /****************************************************************************************************/
     while (1) {
+        if(ADCConversionFinishedFlag){
+            ADCClearConversionFinishedFlag();
+            ADCValue0 = result[0];
+            ADCValue1 = result[1];
+            ADCValue2 = result[2];
+            
+        }
     }
 } // fin main
 
+ 
