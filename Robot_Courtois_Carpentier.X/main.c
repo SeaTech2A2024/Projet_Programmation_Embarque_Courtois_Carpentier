@@ -17,18 +17,15 @@ int main(void)
     /****************************************************************************************************/
     InitIO();
     LED_BLANCHE = 1;
-    LED_BLEUE = 1;
+    LED_BLEUE = 1;  
     LED_ORANGE = 1;
     
-    InitTimer1();
+    InitPWM();
+    PWMSetSpeed(20, MOTEUR_DROIT);
+    PWMSetSpeed(20, MOTEUR_GAUCHE);
+    
     InitTimer23();
-    
-    _T3Interrupt();
-    
-    //InitPWM();
-    //PWMSetSpeed(20, MOTEUR_DROIT);
-    //PWMSetSpeed(20, MOTEUR_GAUCHE);
-
+    InitTimer1();
 
     /****************************************************************************************************/
     // Boucle Principale
