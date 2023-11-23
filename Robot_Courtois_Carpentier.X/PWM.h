@@ -13,9 +13,11 @@
 
 #define PWMPER 40.0
 
-extern unsigned char acceleration;
+extern float acceleration;
 
 void InitPWM(void);
-void PWMSetSpeed(float vitesseEnPourcent, int numeroMoteur);
+//void PWMSetSpeed(float vitesseEnPourcent, int numeroMoteur);
+void PWMSetSpeedConsigne(float vitesseEnPourcents, int moteur);
+void PWMUpdateSpeed();
 
 #endif // PWM_H
