@@ -102,4 +102,3 @@ void PWMSetSpeedConsigne(float vitesseEnPourcents, int moteur) {
         robotState.vitesseDroiteConsigne = vitesseEnPourcents;
     }
 }
-

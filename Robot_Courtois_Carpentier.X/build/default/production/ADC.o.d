@@ -1,16 +1,3 @@
-build/default/production/ADC.o: ADC.c ADC.h timer.h IO.h ChipConfig.h \
- PWM.h Robot.h ToolBox.h
+build/default/production/ADC.o: ADC.c adc.h
 
-ADC.h:
-
-timer.h:
-
-IO.h:
-
-ChipConfig.h:
-
-PWM.h:
-
-Robot.h:
-
-ToolBox.h:
+adc.h:
