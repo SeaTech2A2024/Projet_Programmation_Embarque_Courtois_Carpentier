@@ -106,7 +106,7 @@ void InitTimer4(void) {
     //10 = 1:64 prescale value
     //01 = 1:8 prescale value
     //00 = 1:1 prescale value
-    T4CONbits.TCS = 0; //clock source = internal clock
+    T4CONbits.TCS = 0; 
     //PR1 = 40000000/64/100;
 
     IFS1bits.T4IF = 0; // Clear Timer Interrupt Flag
@@ -117,13 +117,13 @@ void InitTimer4(void) {
 
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
-//    LED_BLEUE = !LED_BLEUE;
+ //   LED_BLEUE = !LED_BLEUE;
     PWMUpdateSpeed();
     ADC1StartConversionSequence();
 }
 
 void __attribute__((interrupt, no_auto_psv)) _T4Interrupt(void) {
     IFS1bits.T4IF = 0;
-    timestamp=timestamp+1;
+    timestamp+=1;
     OperatingSystemLoop();
 }
