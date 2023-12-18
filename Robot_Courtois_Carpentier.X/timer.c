@@ -6,7 +6,7 @@
 #include "adc.h"
 #include "main.h" 
 //Initialisation d?un timer 32 bits
-#define frequence 50
+#define frequenceT1 250
 #define frequence4 1000
 unsigned long timestamp=0;
 
@@ -31,7 +31,8 @@ unsigned char toggle = 0;
 //Interruption du timer 32 bits sur 2-3
 
 void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
-    IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
+    IFS0bits.T3IF = 0; 
+    // Clear Timer3 Interrupt Flag
 //    //    LED_ORANGE = !LED_ORANGE;
 //    if (toggle == 0) {
 //        PWMSetSpeedConsigne(20, 0);
@@ -84,7 +85,7 @@ void InitTimer1(void) {
     //Timer1 pour horodater les mesures (1ms)
     T1CONbits.TON = 0; // Disable Timer
     //T1CONbits.TCKPS = 0b10; //Prescaler
-    SetFreqTimer1(frequence);
+    SetFreqTimer1(frequenceT1);
     //11 = 1:256 prescale value
     //10 = 1:64 prescale value
     //01 = 1:8 prescale value
@@ -106,7 +107,7 @@ void InitTimer4(void) {
     //10 = 1:64 prescale value
     //01 = 1:8 prescale value
     //00 = 1:1 prescale value
-    T4CONbits.TCS = 0; 
+    T4CONbits.TCS = 0; //clock source = internal clock
     //PR1 = 40000000/64/100;
 
     IFS1bits.T4IF = 0; // Clear Timer Interrupt Flag
@@ -117,13 +118,13 @@ void InitTimer4(void) {
 
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
- //   LED_BLEUE = !LED_BLEUE;
+//  LED_BLEUE = !LED_BLEUE;
     PWMUpdateSpeed();
     ADC1StartConversionSequence();
 }
 
 void __attribute__((interrupt, no_auto_psv)) _T4Interrupt(void) {
     IFS1bits.T4IF = 0;
-    timestamp+=1;
+    timestamp=timestamp+1;
     OperatingSystemLoop();
 }

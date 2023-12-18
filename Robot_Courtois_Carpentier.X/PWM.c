@@ -3,13 +3,13 @@
 #include "PWM.h"
 #include "Robot.h"
 #include "ToolBox.h"
-#define PWMPER 40.0
+#define PWMPER 5.0
 
-float acceleration = 1;
+float acceleration = 100;
 
 void InitPWM(void) {
     PTCON2bits.PCLKDIV = 0b000; //Divide by 1
-    PTPER = 100 * PWMPER; //ÈPriode en pourcentage
+    PTPER = 100 * PWMPER; //PÈriode en pourcentage
     //ÈRglage PWM moteur 1 sur hacheur 1
     IOCON1bits.POLH = 1; //High = 1 and active on low =0
     IOCON1bits.POLL = 1; //High = 1
@@ -99,6 +99,6 @@ void PWMSetSpeedConsigne(float vitesseEnPourcents, int moteur) {
         robotState.vitesseGaucheConsigne = vitesseEnPourcents;
     }
     if (moteur == MOTEUR_DROIT) {
-        robotState.vitesseDroiteConsigne = vitesseEnPourcents;
+        robotState.vitesseDroiteConsigne = -vitesseEnPourcents;
     }
 }
