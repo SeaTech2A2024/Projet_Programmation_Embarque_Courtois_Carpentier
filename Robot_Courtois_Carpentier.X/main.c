@@ -16,7 +16,7 @@ int number;
 
 int getRandom(){
     srand(time(NULL));
-    number = rand()%2;
+    number = rand()%3;
     return number;
 }
 
@@ -62,8 +62,8 @@ void OperatingSystemLoop(void) {
             break;
 
         case STATE_TOURNE_SUR_PLACE_GAUCHE:
-            PWMSetSpeedConsigne(25, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(-25, MOTEUR_GAUCHE);
+            PWMSetSpeedConsigne(18, MOTEUR_DROIT);
+            PWMSetSpeedConsigne(-18, MOTEUR_GAUCHE);
             stateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS;
             break;
         case STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS:
@@ -78,11 +78,13 @@ void OperatingSystemLoop(void) {
         case STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS:
             SetNextRobotStateInAutomaticMode();
             break;
-
-        case STATE_BLOQUE :
-            // Recule pour débloquer
-            PWMSetSpeedConsigne(-20, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(-20, MOTEUR_GAUCHE);
+        case STATE_BACKWARD:
+            PWMSetSpeedConsigne(-10, MOTEUR_DROIT);
+            PWMSetSpeedConsigne(-15, MOTEUR_GAUCHE);
+            stateRobot = STATE_BACKWARD_EN_COURS;
+        
+        case STATE_BACKWARD_EN_COURS:
+            SetNextRobotStateInAutomaticMode();
             break;
 
         default:
@@ -95,15 +97,15 @@ unsigned int sensorState = 0b00000;
 
 unsigned int getSensorState(){
     sensorState = 0;
-    if (robotState.distanceTelemetreExGauche < 20)
+    if (robotState.distanceTelemetreExGauche < 23)
         sensorState |= 0b10000;
-    if (robotState.distanceTelemetreGauche < 22)
+    if (robotState.distanceTelemetreGauche < 26)
         sensorState |= 0b01000;
-    if (robotState.distanceTelemetreCentre < 28)
+    if (robotState.distanceTelemetreCentre < 38)
         sensorState |= 0b00100;
-    if (robotState.distanceTelemetreDroit < 22)
+    if (robotState.distanceTelemetreDroit < 26)
         sensorState |= 0b00010;
-    if (robotState.distanceTelemetreExDroit < 20)
+    if (robotState.distanceTelemetreExDroit < 23)
         sensorState |= 0b00001;
 
     return sensorState;
@@ -162,11 +164,14 @@ void SetNextRobotStateInAutomaticMode() {
         case 0b01110:
         case 0b01010:
             num = getRandom();
-            if (num == 1){
+            if (num == 0){
                 nextStateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE;
             }
-            else {
+            else if (num==1) {
                 nextStateRobot = STATE_TOURNE_SUR_PLACE_DROITE;
+            }
+            else {
+                nextStateRobot = STATE_BACKWARD;
             }
                 break;
         }
