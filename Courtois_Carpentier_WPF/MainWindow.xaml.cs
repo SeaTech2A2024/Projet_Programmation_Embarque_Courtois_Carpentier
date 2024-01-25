@@ -51,13 +51,13 @@ namespace Courtois_Carpentier_WPF
             {
                 byte byteValue = robot.byteListReceived.Dequeue();
 
-             
-                string byteAsString = byteValue.ToString();
-                string byteAsHex = byteValue.ToString("X");
-                string byteAsHex2 = byteValue.ToString("X2");
-                string byteAsHex4 = byteValue.ToString("X4");
 
-                textBoxReception.AppendText($"ToString(): {byteAsString}, ToString(\"X\"): {byteAsHex}\n");
+                //string byteAsString = byteValue.ToString();
+                //string byteAsHex = byteValue.ToString("X");
+                //string byteAsHex2 = byteValue.ToString("X2");
+                //string byteAsHex4 = byteValue.ToString("X4");
+
+                textBoxReception.Text += "0x" + byteValue.ToString("X2") + " ";
             }
         }
 
