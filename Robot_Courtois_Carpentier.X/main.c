@@ -9,6 +9,9 @@
 #include "PWM.h"
 #include "adc.h"
 #include "main.h"
+#include "UART.h"
+#include "libpic30.h"
+#include "CB_TX1.h"
 
 
 unsigned char stateRobot;
@@ -92,6 +95,9 @@ void OperatingSystemLoop(void) {
             break;
     }
 }
+
+
+
 unsigned char nextStateRobot = 0;
 unsigned int sensorState = 0b00000;
 
@@ -192,6 +198,7 @@ int main(void) {
     //Initialisation de l?oscillateur
     /****************************************************************************************************/
     InitOscillator();
+    InitUART();
 
     /****************************************************************************************************/
     // Configuration des entr?es sorties
@@ -245,7 +252,9 @@ int main(void) {
 
 
         }
+        //SendMessageDirect((unsigned char*) "Bonjour", 7);
     }
+    
     return 0;
 }
 

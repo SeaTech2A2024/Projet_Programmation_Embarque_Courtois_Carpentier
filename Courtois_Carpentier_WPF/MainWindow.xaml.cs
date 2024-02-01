@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using ExtendedSerialPort_NS;
 using System.IO.Ports;
 using System.Windows.Threading;
-using System.Windows.Threading;
+
 
 
 namespace Courtois_Carpentier_WPF
@@ -51,13 +51,8 @@ namespace Courtois_Carpentier_WPF
             {
                 byte byteValue = robot.byteListReceived.Dequeue();
 
-
-                //string byteAsString = byteValue.ToString();
-                //string byteAsHex = byteValue.ToString("X");
-                //string byteAsHex2 = byteValue.ToString("X2");
-                //string byteAsHex4 = byteValue.ToString("X4");
-
                 textBoxReception.Text += "0x" + byteValue.ToString("X2") + " ";
+              
             }
         }
 
@@ -76,7 +71,7 @@ namespace Courtois_Carpentier_WPF
         private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
         {
 
- textBoxReception.Text += "Reçu : " + textBoxEmission.Text + "\n";
+            textBoxReception.Text += "Reçu : " + textBoxEmission.Text + "\n";
             serialPort1.WriteLine(textBoxEmission.Text);
 
             textBoxEmission.Text = "";
@@ -98,16 +93,13 @@ namespace Courtois_Carpentier_WPF
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            
             byte[] byteList = new byte[20];
             for (int i = 0; i < 20; i++)
             {
                 byteList[i] = (byte)(2 * i);
             }
             serialPort1.Write(byteList, 0, byteList.Length);
-
-
-
+            
         }
 
     
