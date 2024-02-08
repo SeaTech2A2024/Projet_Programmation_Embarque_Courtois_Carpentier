@@ -12,17 +12,16 @@
 #include "UART.h"
 #include "libpic30.h"
 #include "CB_TX1.h"
-
+#include "CB_RX1.h"
 
 unsigned char stateRobot;
 int number;
 
-int getRandom(){
+int getRandom() {
     srand(time(NULL));
-    number = rand()%3;
+    number = rand() % 3;
     return number;
 }
-
 
 void OperatingSystemLoop(void) {
     switch (stateRobot) {
@@ -85,7 +84,7 @@ void OperatingSystemLoop(void) {
             PWMSetSpeedConsigne(-10, MOTEUR_DROIT);
             PWMSetSpeedConsigne(-15, MOTEUR_GAUCHE);
             stateRobot = STATE_BACKWARD_EN_COURS;
-        
+
         case STATE_BACKWARD_EN_COURS:
             SetNextRobotStateInAutomaticMode();
             break;
@@ -101,7 +100,7 @@ void OperatingSystemLoop(void) {
 unsigned char nextStateRobot = 0;
 unsigned int sensorState = 0b00000;
 
-unsigned int getSensorState(){
+unsigned int getSensorState() {
     sensorState = 0;
     if (robotState.distanceTelemetreExGauche < 23)
         sensorState |= 0b10000;
@@ -118,6 +117,7 @@ unsigned int getSensorState(){
 }
 
 int num;
+
 void SetNextRobotStateInAutomaticMode() {
     sensorState = getSensorState();
 
@@ -127,7 +127,7 @@ void SetNextRobotStateInAutomaticMode() {
         case 0b11010:
         case 0b11001:
         case 0b10110:
-        case 0b10010:  
+        case 0b10010:
             nextStateRobot = STATE_TOURNE_SUR_PLACE_DROITE;
             break;
 
@@ -163,29 +163,27 @@ void SetNextRobotStateInAutomaticMode() {
         case 0b01001:
             nextStateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE;
             break;
-            
+
         case 0b11111:
         case 0b11011:
         case 0b10101:
         case 0b01110:
         case 0b01010:
             num = getRandom();
-            if (num == 0){
+            if (num == 0) {
                 nextStateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE;
-            }
-            else if (num==1) {
+            } else if (num == 1) {
                 nextStateRobot = STATE_TOURNE_SUR_PLACE_DROITE;
-            }
-            else {
+            } else {
                 nextStateRobot = STATE_BACKWARD;
             }
-                break;
-        }
-
-    if (nextStateRobot != stateRobot - 1){
-        stateRobot = nextStateRobot;
-        }
+            break;
     }
+
+    if (nextStateRobot != stateRobot - 1) {
+        stateRobot = nextStateRobot;
+    }
+}
 
 int ADCValue0;
 int ADCValue1;
@@ -215,6 +213,8 @@ int main(void) {
     InitPWM();
     // initialiser ADC
     InitADC1();
+
+
 
     /****************************************************************************************************/
     // Boucle Principale
@@ -251,10 +251,16 @@ int main(void) {
                 LED_BLANCHE = 0;
 
 
+
         }
-        //SendMessageDirect((unsigned char*) "Bonjour", 7);
+        int i;
+        for (i = 0; i < CB_RX1_GetDataSize(); i++) {
+            unsigned char c = CB_RX1_Get();
+            SendMessage(&c, 1);
+        }
+        __delay32(1000);
     }
-    
+
     return 0;
 }
 
