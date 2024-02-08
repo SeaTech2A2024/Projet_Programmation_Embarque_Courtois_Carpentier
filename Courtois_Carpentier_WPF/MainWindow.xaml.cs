@@ -64,7 +64,7 @@ namespace Courtois_Carpentier_WPF
                 robot.byteListReceived.Enqueue(e.Data[i]);
             }
                 
-            robot.receivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+            //robot.receivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
 
         }
 
@@ -93,15 +93,55 @@ namespace Courtois_Carpentier_WPF
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            byte[] byteList = new byte[20];
-            for (int i = 0; i < 20; i++)
-            {
-                byteList[i] = (byte)(2 * i);
-            }
-            serialPort1.Write(byteList, 0, byteList.Length);
+            byte[] payload = new byte[3];
+            payload[0] = 10;
+            payload[1] = 20;
+            payload[2] = 30;
+
+
+            UartEncodeAndSendMessage(0x0080, 3, payload);
+            //byte[] array = Encoding.ASCII.GetBytes(textBoxEmission.Text);
+            //serialPort1.Write(array, 0, array.Length);
             
         }
+        byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
+        {
 
-    
+            byte checksum = 0;
+            checksum ^= (byte)(0xFE);
+            checksum ^= (byte)(msgFunction);
+            checksum ^= (byte)(msgPayloadLength);
+
+            for (int i = 0; i < msgPayloadLength; i++)
+            {
+                checksum ^= msgPayload[i];
+            }
+
+            return checksum;
+        }
+
+         
+        void UartEncodeAndSendMessage(int msgFunction,int msgPayloadLength, byte[] msgPayload)
+        {
+
+            byte checksumSend = CalculateChecksum( msgFunction,  msgPayloadLength, msgPayload);
+            
+            byte[] encodedMessage = new byte[msgPayloadLength + 6];
+            int pos = 0;
+            encodedMessage[pos++] = 0xFE;
+            encodedMessage[pos++] = (byte)(msgFunction >> 8);
+            encodedMessage[pos++] = (byte)(msgFunction >> 0);
+            encodedMessage[pos++] = (byte)(msgPayloadLength >> 8);
+            encodedMessage[pos++] = (byte)(msgPayloadLength >> 0);
+            encodedMessage[pos++] = checksumSend;
+
+
+            for (int i = 0; i < msgPayloadLength; i++)
+            {
+                encodedMessage[pos++] += msgPayload[i];
+            }
+            //textBoxEmission.Text += encodedMessage;
+            serialPort1.Write(encodedMessage, 0, encodedMessage.Length);
+        }
     }
 }
