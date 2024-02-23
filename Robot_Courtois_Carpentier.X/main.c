@@ -13,6 +13,7 @@
 #include "libpic30.h"
 #include "CB_TX1.h"
 #include "CB_RX1.h"
+#include "UART_Protocol.h"
 
 unsigned char stateRobot;
 int number;
@@ -214,7 +215,7 @@ int main(void) {
     // initialiser ADC
     InitADC1();
 
-
+    
 
     /****************************************************************************************************/
     // Boucle Principale
@@ -233,7 +234,12 @@ int main(void) {
             robotState.distanceTelemetreGauche = 34 / volts - 5;
             volts = ((float) result [4])* 3.3 / 4096 * 3.2;
             robotState.distanceTelemetreExGauche = 34 / volts - 5;
-
+               
+            int function = 0x0030;
+            unsigned char payload = ADCGetResult();
+            int payloadLength = sizeof(ADCGetResult());
+            UartEncodeAndSendMessage(function, payload, payloadLength);
+            __delay32(40000000);
 
             if (robotState.distanceTelemetreExDroit < 15 || robotState.distanceTelemetreDroit < 15)
                 LED_ORANGE = 1;
@@ -253,12 +259,20 @@ int main(void) {
 
 
         }
+
+        //Lescture du buffer de réception et renvoi
         int i;
         for (i = 0; i < CB_RX1_GetDataSize(); i++) {
             unsigned char c = CB_RX1_Get();
             SendMessage(&c, 1);
         }
-        __delay32(1000);
+
+        
+        // Envoi d'un message formaté
+        //unsigned char payload[] = {'B', 'o', 'n', 'j', 'o', 'u', 'r'};
+        //UartEncodeAndSendMessage(0x0080, sizeof (payload), payload);
+        //__delay32(4000000);
+
     }
 
     return 0;

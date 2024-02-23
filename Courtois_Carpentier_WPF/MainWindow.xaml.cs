@@ -51,7 +51,6 @@ namespace Courtois_Carpentier_WPF
                 byte byteValue = robot.byteListReceived.Dequeue();
 
                 DecodeMessage(byteValue);
-                //textBoxReception.Text += "0x" + byteValue.ToString("X2") + " ";
 
             }
         }
@@ -100,57 +99,45 @@ namespace Courtois_Carpentier_WPF
         }
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Supervision command in Enum.GetValues(typeof(Supervision)))
-            {
 
-                switch (command)
-                {
-                    case Supervision.TXT:
-                        int commandValue = (int)command;
-                        byte[] payload = Encoding.ASCII.GetBytes("Y a pas de snickers dans la machine");
-                        UartEncodeAndSendMessage(commandValue, payload.Length, payload);
-                        break;
+            byte[] payload = Encoding.ASCII.GetBytes("Y a pas de snickers dans la machine");
+            UartEncodeAndSendMessage(0x0080, payload.Length, payload);
 
-                    case Supervision.LED:
-                        commandValue = (int)command;
-                        payload = new byte[3];
-                        payload[0] = 10;
-                        payload[1] = 21;
-                        payload[2] = 31;
+            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });
 
-                        UartEncodeAndSendMessage(commandValue, payload.Length, payload);
+            UartEncodeAndSendMessage(0x0030, 3, new byte[] { 80, 50, 20 });
 
-                        break;
-
-                    case Supervision.IR:
-                        commandValue = (int)command;
-                        payload = new byte[3];
-                        payload[0] = 10;
-                        payload[1] = 20;
-                        payload[2] = 30;
-                        UartEncodeAndSendMessage(commandValue, payload.Length, payload);
-                        break;
-
-                    case Supervision.CV:
-                        commandValue = (int)command;
-                        payload = new byte[2];
-                        payload[0] = 80;
-                        payload[1] = 20;
-                        UartEncodeAndSendMessage(commandValue, payload.Length, payload);
-                        break;
-                }
-            }
-
-            //byte[] array = Encoding.ASCII.GetBytes(textBoxEmission.Text);
-            //serialPort1.Write(array, 0, array.Length);
+            UartEncodeAndSendMessage(0x0040, 2, new byte[] { 50, 50});
         }
 
         void ProcessDecodedMessage(int msgFunction, int msgPayloadLength, byte[] msgPayload)
         {
             switch (msgFunction)
             {
+                case 0x0080:
+                    textBoxReception.Text = Encoding.Default.GetString(msgPayload);
+                    break;
+
                 case 0x0020:
-                    Led1
+                    if (msgPayload[0] == 1) 
+                    {
+                        CheckboxLed1.IsChecked = true;
+                    }
+                    else if (msgPayload[0] == 2)
+                        CheckboxLed2.IsChecked = true;
+                    else if(msgPayload[0] == 3)
+                        CheckboxLed3.IsChecked = true;
+                    break;
+
+                case 0x0030:
+                    IRGauche.Text = "IRGauche :  " + msgPayload[0].ToString();
+                    IRCentre.Text = "IRCentre :  "  + msgPayload[1].ToString();
+                    IRDroit.Text =  "IRDroit :  " + msgPayload[2].ToString();
+                    break;
+
+                case 0x0040:
+                    VitesseD.Text = "VitesseD :  " + msgPayload[0].ToString();
+                    VitesseG.Text = "VitesseG :  " + msgPayload[1].ToString();
                     break;
             }
         }
@@ -208,6 +195,7 @@ namespace Courtois_Carpentier_WPF
         byte[] msgDecodedPayload;
         int msgDecodedPayloadIndex = 0;
         int calculatedChecksum = 0;
+        bool bonmessage;
 
         private void DecodeMessage(byte c)
         {
@@ -255,10 +243,14 @@ namespace Courtois_Carpentier_WPF
 
                     if (calculatedChecksum == c)
                     {
+                        bonmessage = true;
                         Debug.WriteLine("Youpi");
+
+                        ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
                     }
                     else
                     {
+                        bonmessage = false;
                         Debug.WriteLine("Bouh");
                     }
                     rcvState = StateReception.Waiting;
