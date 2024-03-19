@@ -97,6 +97,30 @@ namespace Courtois_Carpentier_WPF
             IR = 0x0030,
             CV = 0x0040
         }
+
+        public enum StateRobot
+        {
+            STATE_ATTENTE = 0,
+            STATE_ATTENTE_EN_COURS = 1,
+            STATE_AVANCE = 2,
+            STATE_AVANCE_EN_COURS = 3,
+            STATE_TOURNE_GAUCHE = 4,
+            STATE_TOURNE_GAUCHE_EN_COURS = 5,
+            STATE_TOURNE_DROITE = 6,
+            STATE_TOURNE_DROITE_EN_COURS = 7,
+            STATE_TOURNE_SUR_PLACE_GAUCHE = 8,
+            STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS = 9,
+            STATE_TOURNE_SUR_PLACE_DROITE = 10,
+            STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS = 11,
+            STATE_ARRET = 12,
+            STATE_ARRET_EN_COURS = 13,
+            STATE_RECULE = 14,
+            STATE_RECULE_EN_COURS = 15,
+            STATE_BLOQUE = 16,
+            STATE_BACKWARD = 17,
+            STATE_BACKWARD_EN_COURS = 18
+        }
+
         private void Test_Click(object sender, RoutedEventArgs e)
         {
 
@@ -139,6 +163,12 @@ namespace Courtois_Carpentier_WPF
                     VitesseD.Text = "VitesseD :  " + msgPayload[0].ToString();
                     VitesseG.Text = "VitesseG :  " + msgPayload[1].ToString();
                     break;
+
+                case 0x0050:
+                    State.Text = "";
+                    int instant = (((int)msgPayload[1]) << 24) + (((int)msgPayload[2]) << 16) + (((int)msgPayload[3]) << 8) + ((int)msgPayload[4]);
+                    State.Text += "Robot State : " + ((StateRobot)(msgPayload[0])).ToString() + "\n" + instant.ToString() + " ms";
+                    break;
             }
         }
         byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
@@ -172,7 +202,7 @@ namespace Courtois_Carpentier_WPF
             encodedMessage[pos++] = (byte)(msgPayloadLength >> 0);
             for (int i = 0; i < msgPayloadLength; i++)
             {
-                encodedMessage[pos++] += msgPayload[i];
+                encodedMessage[pos++] = msgPayload[i];
             }
             encodedMessage[pos++] = (byte)(checksumSend);
             serialPort1.Write(encodedMessage, 0, encodedMessage.Length);
@@ -261,5 +291,6 @@ namespace Courtois_Carpentier_WPF
                     break;
             }
         }
+
     }
 }

@@ -81,7 +81,7 @@ void __attribute__((interrupt, no_auto_psv)) _AD1Interrupt(void) {
     ADCResult[2] = ADC1BUF2; // centre
     ADCResult[3] = ADC1BUF3; // Exgauche
     ADCResult[4] = ADC1BUF4; // gauche      
-    ADCConversionFinishedFlag = 1;
+    ADCConversionFinishedFlag = 1;    
 }
 
 void ADC1StartConversionSequence() {
@@ -93,6 +93,7 @@ unsigned int * ADCGetResult(void) {
 }
 
 unsigned char ADCIsConversionFinished(void) {
+    
 
     return ADCConversionFinishedFlag;
 }
